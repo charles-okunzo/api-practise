@@ -20,5 +20,7 @@ from api_home import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('api_app.urls')),
-    path('api-endpoint', views.StudentSer.as_view(), name='api-endpoint')
+    path('api-endpoint', views.StudentSer.as_view(), name='api-endpoint'),
+    path('api-detail-endpoint/<int:pk>/', views.StudentDescription.as_view(), name='api-detail')
+
 ]

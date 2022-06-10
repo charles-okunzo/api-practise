@@ -1,3 +1,4 @@
+from django.http import Http404
 from rest_framework.response import Response
 from rest_framework import status, generics
 from rest_framework.decorators import api_view, APIView
@@ -6,6 +7,7 @@ from api_app.models import Student
 from api_home import serializers
 from api_home.permissions import IsAdminOrReadOnly
 from api_home.serializers import StudentSerializer
+from django.shortcuts import get_object_or_404
 
 
 # @api_view(['GET'])
@@ -49,8 +51,27 @@ class StudentSer(APIView):
             return Response(serializers.data, status=status.HTTP_201_CREATED)
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+class StudentDescription(APIView):
+    def get_student(self, pk):
+        # try:
+        #     return Student.objects.get(pk=pk)
+        # except Student.DoesNotExist:
+        #     return Http404
+        return get_object_or_404(Student, pk=pk)
+    
+    def get(self, request, pk, format = None):
+        student = self.get_student(pk)
+        serializers = StudentSerializer(student)
+        return Response(serializers.data)
+
 #generics
 class  StudentListAPIView(generics.ListAPIView):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+
+
+class StudentDetailAPIView(generics.RetrieveAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
 
