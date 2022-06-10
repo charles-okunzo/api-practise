@@ -12,6 +12,7 @@ whitenoise = "*"
 django-heroku = "*"
 python-decouple = "*"
 dj-database-url = "*"
+requests = "*"
 
 [dev-packages]
 
