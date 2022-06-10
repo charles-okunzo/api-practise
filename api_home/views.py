@@ -4,6 +4,7 @@ from rest_framework.decorators import api_view, APIView
 
 from api_app.models import Student
 from api_home import serializers
+from api_home.permissions import IsAdminOrReadOnly
 from api_home.serializers import StudentSerializer
 
 
@@ -34,6 +35,7 @@ def show_student_data(request):
 
 #class api views
 class StudentSer(APIView):
+    permission_classes = (IsAdminOrReadOnly,)
     def get(self, request, format = None):
         students = Student.objects.all()
         serializers = StudentSerializer(students, many=True)
